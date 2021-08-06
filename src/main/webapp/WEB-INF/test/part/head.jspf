@@ -1,0 +1,233 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>${pageTitle}|JSPBOARD</title>
+
+<!-- 모바일에서 디자인이 축소되지 않게 하기 위한 코드 -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- 폰트어썸 불러오기 -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
+<!-- 제이쿼리 불러오기 -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- 테일윈드, 데이지 UI 불러오기 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css" />
+<link href="https://cdn.jsdelivr.net/npm/daisyui@1.10.0/dist/full.css" rel="stylesheet" type="text/css" />
+
+
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resource/font.css" />
+</head>
+
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resource/common.css" />
+	
+<script src="${pageContext.request.contextPath}/resource/common.js" defer="defer"></script>
+	
+</head>
+
+<%="<script>"%>
+const rqParams = ${rq.paramMapJsonStr};
+<%="</script>"%>
+<%="<script>"%>
+const rqBaseTypeAttrMapJsonStr = ${rq.baseTypeAttrMapJsonStr};
+<%="</script>"%>
+
+<body>
+	<div class="site-wrap flex flex-col min-h-screen">
+	<div class="h-12 flex-shrink-0 mb-4"></div>
+	
+	<header
+		class="mobile-top-bar h-12 fixed inset-0 z-40 font-bold bg-white border-b md:hidden">
+		<div class="h-full container mx-auto flex">
+			<a href="../../"
+				class="top-bar__logo flex items-center px-4 hover:underline hover:text-red-500">
+				<span>
+					<i class="far fa-lemon"></i>
+				</span>
+				<span>&nbsp;LM</span>
+			</a>
+			<div class="flex-grow"></div>
+			<a href="../article/write"
+				class="top-bar__write flex items-center px-4 hover:underline hover:text-red-500">
+				<span>
+					<i class="fas fa-pen"></i>
+				</span>
+			</a>
+			<a class="top-bar__search flex items-center px-4 hover:underline hover:text-red-500">
+				<span>
+					<i class="fas fa-search"></i>
+				</span>
+			</a>
+			<span class="mobile-side-bar__btn flex items-center px-4 cursor-pointer">
+				<i class="fas fa-bars"></i>
+			</span>
+		</div>
+	</header>
+	
+	<div class="mobile-side-bar md:hidden fixed inset-0 z-50">
+	  <div class="mobile-side-bar__content bg-white fixed inset-0 ml-auto flex flex-col">
+	    <div class="mobile-side-bar__header flex mt-2 py-2 flex-shrink-0 text-3xl border-b border-gray-500">
+	      <div class="flex-1"></div>
+	      <div class="mobile-side-bar__logo">
+	        <a href="../../" class="top-bar__logo flex items-center px-4 hover:underline hover:text-red-500">
+	          <span>
+	            <i class="far fa-lemon"></i>
+	          </span>
+	          <span>&nbsp;LM</span>
+	        </a>
+	      </div>
+	      <div class="flex-1 flex justify-end">
+	        <span class="mobile-side-bar__close-btn px-2 cursor-pointer">
+	          <i class="fas fa-times"></i>
+	        </span>
+	      </div>
+	    </div>
+	    <div class="mobile-side-bar__body flex-grow flex flex-col items-center overflow-y-auto mt-4">
+	      <nav class="mobile-side-bar__menu-box-1 text-xl">
+				<ul>
+					<li class="p-4">
+						<a href="../../"
+							class="p-2 hover:underline hover:text-red-500">
+							<span><i class="fas fa-home"></i></span>
+							<span>&nbsp;HOME</span>
+						</a>
+					</li>
+					<li class="p-4">
+						<a href="../article/list?boardId=1"
+							class="p-2 hover:underline hover:text-red-500">
+							<span><i class="fas fa-flag"></i></span>
+							<span>&nbsp;NOTICE BOARD</span>
+						</a>
+					</li>
+					<li class="p-4">
+						<a href="../article/list?boardId=2"
+							class="p-2 hover:underline hover:text-red-500">
+							<span><i class="fas fa-paper-plane"></i></span>
+							<span>&nbsp;FREE BOARD</span>
+						</a>
+					</li>
+					<c:if test="${rq.notLogined}">
+						<li class="p-4">
+							<a
+								href="../member/login?afterLoginUri=${rq.encodedAfterLoginUri}"
+								class="p-2 hover:underline hover:text-red-500">
+								<span><i class="fas fa-sign-in-alt"></i></span>
+								<span>&nbsp;LOGIN</span>
+							</a>
+						</li>
+						<li class="p-4">
+							<a href="../member/join"
+								class="p-2 hover:underline hover:text-red-500">
+								<span><i class="fas fa-user-plus"></i></span>
+								<span>&nbsp;JOIN</span>
+							</a>
+						</li>
+					</c:if>
+					<c:if test="${rq.logined}">
+						<li class="p-4">
+							<a
+								onclick="if ( !confirm('로그아웃 하시겠습니까?') ) return false;"
+								href="../member/doLogout"
+								class="p-2 hover:underline hover:text-red-500">
+								<span><i class="fas fa-sign-out-alt"></i></span>
+								<span>&nbsp;LOGOUT</span>
+							</a>
+						</li>
+						<li class="p-4">
+							<a href="#"
+								class="p-2 hover:underline hover:text-red-500">
+								<span><i class="fas fa-user"></i></span>
+								<span>&nbsp;MYPAGE</span>
+							</a>
+						</li>
+					</c:if>
+				</ul>
+			</nav>
+	    </div>
+	  </div>
+	</div>
+	
+	<header
+		class="top-bar h-12 fixed inset-0 z-40 font-bold bg-white border-b hidden md:block">
+		<div class="h-full container mx-auto flex">
+			<a href="../../"
+				class="top-bar__logo flex items-center px-4 hover:underline hover:text-red-500">
+				<span> <i class="far fa-lemon"></i>
+			</span> <span class="hidden md:block">&nbsp;레몬 커뮤니티 </span>
+			</a>
+
+			<div class="flex-grow"></div>
+
+			<nav class="top-bar__menu-box-1">
+				<ul class="flex h-full">
+					<li>
+						<a href="../../"
+							class="h-full flex items-center px-4 hover:underline hover:text-red-500">
+								<span> <i class="fas fa-home"></i>
+							</span> <span class="hidden sm:block">&nbsp;HOME</span>
+						</a>
+					</li>
+					<li>
+						<a href="../article/list?boardId=1"
+							class="h-full flex items-center px-4 hover:underline hover:text-red-500">
+								<span> <i class="fas fa-flag"></i>
+							</span> <span class="hidden sm:block">&nbsp;NOTICE LIST</span>
+						</a>
+					</li>
+					<li>
+						<a href="../article/list?boardId=2"
+							class="h-full flex items-center px-4 hover:underline hover:text-red-500">
+								<span> <i class="fas fa-paper-plane"></i>
+							</span> <span class="hidden sm:block">&nbsp;FREE LIST</span>
+						</a>
+					</li>
+					<c:if test="${rq.notLogined}">
+						<li>
+							<a
+								href="../member/login?afterLoginUri=${rq.encodedAfterLoginUri}"
+								class="h-full flex items-center px-4 hover:underline hover:text-red-500">
+									<span> <i class="fas fa-sign-in-alt"></i>
+								</span> <span class="hidden sm:block">&nbsp;LOGIN</span>
+							</a>
+						</li>
+						<li>
+							<a href="../member/join"
+								class="h-full flex items-center px-4 hover:underline hover:text-red-500">
+									<span> <i class="fas fa-user-plus"></i>
+								</span> <span class="hidden sm:block">&nbsp;JOIN</span>
+							</a>
+						</li>
+					</c:if>
+					<c:if test="${rq.logined}">
+						<li>
+							<a
+								onclick="if ( !confirm('로그아웃 하시겠습니까?') ) return false;"
+								href="../member/doLogout"
+								class="h-full flex items-center px-4 hover:underline hover:text-red-500">
+									<span> <i class="fas fa-sign-out-alt"></i>
+								</span> <span class="hidden sm:block">&nbsp;LOGOUT</span>
+							</a>
+						</li>
+						<li>
+							<a href="#"
+								class="h-full flex items-center px-4 hover:underline hover:text-red-500">
+									<span> <i class="fas fa-user"></i>
+								</span> <span class="hidden sm:block">&nbsp;MY PAGE</span>
+							</a>
+						</li>
+					</c:if>
+				</ul>
+			</nav>
+		</div>
+	</header>
+	<main class="flex-grow flex flex-col">
